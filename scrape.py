@@ -122,7 +122,7 @@ class Link:
         self.name = name
 
         if self.name is None:
-            self.name = ",".join(sender.name for sender in self.senders)
+            self.name = ",".join(scraper.id for scraper in scrapers)
 
         self.load()
 
