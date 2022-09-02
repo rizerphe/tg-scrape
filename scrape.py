@@ -116,15 +116,19 @@ class Sender:
 
 
 class Link:
-    def __init__(self, senders, scrapers) -> None:
+    def __init__(self, senders, scrapers, name=None) -> None:
         self.senders = senders
         self.scrapers = scrapers
+        self.name = name
+
+        if self.name is None:
+            self.name = ",".join(sender.name for sender in self.senders)
 
         self.load()
 
     def load(self):
         try:
-            with open("sent.yaml", "r") as f:
+            with open(f"sent/{self.name}.yaml", "r") as f:
                 messages = yaml.safe_load(f)
             self.messages = [Message(**message) for message in messages]
         except FileNotFoundError:
@@ -132,7 +136,7 @@ class Link:
 
     def dump(self):
         messages = [dataclasses.asdict(message) for message in self.messages]
-        yaml.safe_dump(messages, open("sent.yaml", "w"))
+        yaml.safe_dump(messages, open(f"sent/{self.name}.yaml", "w"))
 
     def retranslate(self):
         messages = sum((scraper.get_messages() for scraper in self.scrapers), [])

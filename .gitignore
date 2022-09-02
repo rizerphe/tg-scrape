@@ -162,4 +162,4 @@ cython_debug/
 
 # Project specific
 config.yaml
-sent.yaml
+sent
