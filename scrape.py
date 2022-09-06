@@ -19,6 +19,25 @@ class Message:
     channel_id: str = None
     color: int = None
 
+    def compare(self, other):
+        if self.timestamp != other.timestamp:
+            return False
+        if self.text != other.text:
+            return False
+        if self.photo != other.photo:
+            return False
+        if self.author != other.author:
+            return False
+        if self.channel_id != other.channel_id:
+            return False
+        return True
+    
+    def _in(self, iterable):
+        for item in iterable:
+            if self.compare(item):
+                return True
+        return False
+
 
 class Scraper:
     def __init__(self, id: str, color: int = None):
@@ -143,7 +162,7 @@ class Link:
         messages.sort(key=lambda msg: msg.timestamp)
         for message in messages:
             for sender in self.senders:
-                if message not in self.messages:
+                if  not message._in(self.messages):
                     sender.send_message(message)
                     self.messages.append(message)
         self.dump()
