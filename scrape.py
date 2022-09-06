@@ -24,8 +24,6 @@ class Message:
             return False
         if self.text != other.text:
             return False
-        if self.photo != other.photo:
-            return False
         if self.author != other.author:
             return False
         if self.channel_id != other.channel_id:
